@@ -1,6 +1,6 @@
 let aspects = [];
 let values = [];
-const maxValue = 5;
+const maxValue = 10;
 const radius = 200;
 const svg = document.getElementById("radar");
 
