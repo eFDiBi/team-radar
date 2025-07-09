@@ -1,4 +1,4 @@
-let aspects = [];
+let behaviors = [];
 let values = [];
 const maxValue = 10;
 const radius = 200;
@@ -15,7 +15,7 @@ function polarToCartesian(angle, value) {
 
 function drawRadar() {
   svg.innerHTML = "";
-  const step = 360 / aspects.length;
+  const step = 360 / behaviors.length;
   const points = [];
 
   // Círculos de fondo
@@ -25,36 +25,35 @@ function drawRadar() {
   }
 
   // Líneas + etiquetas
-  for (let i = 0; i < aspects.length; i++) {
+  for (let i = 0; i < behaviors.length; i++) {
     const angle = i * step;
     const guide = polarToCartesian(angle, maxValue);
     const label = polarToCartesian(angle, maxValue + 0.6);
     svg.innerHTML += `
       <line x1="0" y1="0" x2="${guide.x}" y2="${guide.y}" stroke="#ccc"/>
-      <text x="${label.x}" y="${label.y}" font-size="12" text-anchor="middle">${aspects[i]}</text>
+      <text x="${label.x}" y="${label.y}" font-size="12" text-anchor="middle">${behaviors[i]}</text>
     `;
   }
 
   // Área del radar
-  for (let i = 0; i < aspects.length; i++) {
+  for (let i = 0; i < behaviors.length; i++) {
     const angle = i * step;
     const pt = polarToCartesian(angle, values[i]);
     points.push(`${pt.x},${pt.y}`);
   }
-
   svg.innerHTML += `
     <polygon points="${points.join(" ")}" fill="rgba(0,123,255,0.4)" stroke="#007bff" stroke-width="2"/>
   `;
 
   // Puntos activos
-  for (let i = 0; i < aspects.length; i++) {
+  for (let i = 0; i < behaviors.length; i++) {
     const angle = i * step;
     const pt = polarToCartesian(angle, values[i]);
     svg.innerHTML += `<circle cx="${pt.x}" cy="${pt.y}" r="6" fill="#007bff"/>`;
   }
 
   // Puntos clickeables
-  for (let i = 0; i < aspects.length; i++) {
+  for (let i = 0; i < behaviors.length; i++) {
     const angle = i * step;
     for (let level = 1; level <= maxValue; level++) {
       const pt = polarToCartesian(angle, level);
@@ -82,9 +81,9 @@ function handleClick(e) {
   drawRadar();
 }
 
-// 🆕 Botón para cargar los aspectos
+// Botón para cargar los comportamientos
 function generateRadar() {
-  const rawText = document.getElementById("input-aspects").value;
+  const rawText = document.getElementById("input-behaviors").value;
   const lines = rawText.split('\n').map(line => line.trim()).filter(line => line !== '');
 
   if (lines.length < 3) {
@@ -92,7 +91,12 @@ function generateRadar() {
     return;
   }
 
-  aspects = lines;
-  values = new Array(aspects.length).fill(0);
+  behaviors = lines;
+  values = new Array(behaviors.length).fill(0);
   drawRadar();
 }
+
+// Genera el radar al cargar la página con los comportamientos por defecto
+window.onload = () => {
+  generateRadar();
+};
