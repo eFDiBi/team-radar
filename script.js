@@ -88,7 +88,7 @@ function generateRadar() {
   const lines = rawText.split('\n').map(line => line.trim()).filter(line => line !== '');
 
   if (lines.length < 3) {
-    alert("Por favor, ingresa al menos 3 aspectos.");
+    alert("Por favor, ingresa al menos 3 comportamientos.");
     return;
   }
 
