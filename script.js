@@ -81,13 +81,13 @@ function handleClick(e) {
   drawRadar();
 }
 
-// Botón para cargar los comportamientos
+// Botón para cargar los ejes
 function generateRadar() {
   const rawText = document.getElementById("input-behaviors").value;
   const lines = rawText.split('\n').map(line => line.trim()).filter(line => line !== '');
 
   if (lines.length < 3) {
-    alert("Por favor, ingresa al menos 3 comportamientos.");
+    alert("Por favor, ingresa al menos 3 ejes.");
     return;
   }
 
@@ -96,7 +96,7 @@ function generateRadar() {
   drawRadar();
 }
 
-// Genera el radar al cargar la página con los comportamientos por defecto
+// Genera el radar al cargar la página con los ejes por defecto
 window.onload = () => {
   generateRadar();
 };
