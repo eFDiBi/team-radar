@@ -15,7 +15,7 @@ function polarToCartesian(angle, value) {
 
 function drawRadar() {
   svg.innerHTML = "";
-  const step = 360 / dimension.length;
+  const step = 360 / dimensions.length;
   const points = [];
 
   // Círculos de fondo
@@ -83,7 +83,7 @@ function handleClick(e) {
 
 // Botón para cargar los ejes
 function generateRadar() {
-  const rawText = document.getElementById("input-dimension").value;
+  const rawText = document.getElementById("input-dimensions").value;
   const lines = rawText.split('\n').map(line => line.trim()).filter(line => line !== '');
 
   if (lines.length < 3) {
@@ -92,7 +92,7 @@ function generateRadar() {
   }
 
   dimensions = lines;
-  values = new Array(dimension.length).fill(0);
+  values = new Array(dimensions.length).fill(0);
   drawRadar();
 }
 
