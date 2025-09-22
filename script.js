@@ -1,8 +1,10 @@
 let dimensions = [];
 let values = [];
-const maxValue = 10;
+let maxValue = 10;
 const radius = 200;
 const svg = document.getElementById("radar");
+
+
 
 function polarToCartesian(angle, value) {
   const angleRad = (angle - 90) * Math.PI / 180;
@@ -81,6 +83,27 @@ function handleClick(e) {
   drawRadar();
 }
 
+// Cargar configuracion
+async function loadConfig() {
+  try {
+    const res = await fetch('./config.json', { cache: 'no-cache' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const cfg = await res.json();
+
+    // Toma datos del config si existen
+    if (typeof cfg.maxValue === 'number' && cfg.maxValue > 0) {
+      maxValue = cfg.maxValue;
+    } // Por default seteado al declarar la variable
+    
+    if (Array.isArray(cfg.dimensions) && cfg.dimensions.length >= 3) {
+      dimensions = cfg.dimensions;
+      document.getElementById('input-dimensions').value = dimensions.join('\n');
+    }
+  } catch (err) {
+    console.warn('No se cargó config.json, uso fallback del textarea.', err);
+  }
+}
+
 // Botón para cargar los ejes
 function generateRadar() {
   const rawText = document.getElementById("input-dimensions").value;
@@ -96,7 +119,8 @@ function generateRadar() {
   drawRadar();
 }
 
-// Genera el radar al cargar la página con los ejes por defecto
-window.onload = () => {
+// Genera la rueda al cargar la página con las dimensiones por defecto
+window.onload = async () => {
+  await loadConfig(); // Inicialización al cargar
   generateRadar();
 };
