@@ -1,0 +1,4 @@
+{
+  "maxValue": 10,
+  "dimensions": ["Jefe", "Pares", "Reportes", "Motivación", "Descanso", "Resultados", "Paciencia", "Escucha", "Confianza"],
+}
