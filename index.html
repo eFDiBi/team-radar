@@ -1,22 +1,46 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Radar de Autopercepción</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheel of Life</title>
+    <style>
+        .circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #4a90e2;
+            display: inline-flex;
+            margin: 10px;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        .circle span {
+            display: none;
+        }
+        .circle.show span {
+            display: block;
+        }
+    </style>
 </head>
 <body>
+    <div id="circles"></div>
 
-  <div style="text-align:center; margin-bottom: 20px;">
-    <h3>Define los Comportamientos del radar</h3>
-    <textarea id="input-behaviors" rows="5" cols="40" placeholder="Un comportamiento por línea...">Motivación
+    <div style="text-align:center; margin-bottom: 20px;">
+        <h3>Define los Comportamientos del radar</h3>
+        <textarea id="input-behaviors" rows="5" cols="40" placeholder="Un comportamiento por línea...">Motivación
 Emocionalidad
 Respeto</textarea><br>
-    <button onclick="generateRadar()">Generar Radar</button>
-  </div>
+        <button onclick="generateRadar()">Generar Radar</button>
+    </div>
 
-  <svg id="radar" viewBox="-250 -250 500 500" width="500" height="500" style="border:1px solid #ccc;"></svg>
-
-  <script src="script.js"></script>
+    <svg id="radar" viewBox="-250 -250 500 500" width="500" height="500" style="border:1px solid #ccc;"></svg>
+    
+    <script src="script.js"></script>
 </body>
 </html>

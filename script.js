@@ -1,4 +1,4 @@
-let behaviors = [];
+let dimensions = [];
 let values = [];
 const maxValue = 10;
 const radius = 200;
@@ -15,7 +15,7 @@ function polarToCartesian(angle, value) {
 
 function drawRadar() {
   svg.innerHTML = "";
-  const step = 360 / behaviors.length;
+  const step = 360 / dimension.length;
   const points = [];
 
   // Círculos de fondo
@@ -25,18 +25,18 @@ function drawRadar() {
   }
 
   // Líneas + etiquetas
-  for (let i = 0; i < behaviors.length; i++) {
+  for (let i = 0; i < dimensions.length; i++) {
     const angle = i * step;
     const guide = polarToCartesian(angle, maxValue);
     const label = polarToCartesian(angle, maxValue + 0.6);
     svg.innerHTML += `
       <line x1="0" y1="0" x2="${guide.x}" y2="${guide.y}" stroke="#ccc"/>
-      <text x="${label.x}" y="${label.y}" font-size="12" text-anchor="middle">${behaviors[i]}</text>
+      <text x="${label.x}" y="${label.y}" font-size="12" text-anchor="middle">${dimensions[i]}</text>
     `;
   }
 
   // Área del radar
-  for (let i = 0; i < behaviors.length; i++) {
+  for (let i = 0; i < dimensions.length; i++) {
     const angle = i * step;
     const pt = polarToCartesian(angle, values[i]);
     points.push(`${pt.x},${pt.y}`);
@@ -46,14 +46,14 @@ function drawRadar() {
   `;
 
   // Puntos activos
-  for (let i = 0; i < behaviors.length; i++) {
+  for (let i = 0; i < dimensions.length; i++) {
     const angle = i * step;
     const pt = polarToCartesian(angle, values[i]);
     svg.innerHTML += `<circle cx="${pt.x}" cy="${pt.y}" r="6" fill="#007bff"/>`;
   }
 
   // Puntos clickeables
-  for (let i = 0; i < behaviors.length; i++) {
+  for (let i = 0; i < dimensions.length; i++) {
     const angle = i * step;
     for (let level = 1; level <= maxValue; level++) {
       const pt = polarToCartesian(angle, level);
@@ -81,22 +81,22 @@ function handleClick(e) {
   drawRadar();
 }
 
-// Botón para cargar los comportamientos
+// Botón para cargar los ejes
 function generateRadar() {
-  const rawText = document.getElementById("input-behaviors").value;
+  const rawText = document.getElementById("input-dimension").value;
   const lines = rawText.split('\n').map(line => line.trim()).filter(line => line !== '');
 
   if (lines.length < 3) {
-    alert("Por favor, ingresa al menos 3 comportamientos.");
+    alert("Por favor, ingresa al menos 3 ejes.");
     return;
   }
 
-  behaviors = lines;
-  values = new Array(behaviors.length).fill(0);
+  dimensions = lines;
+  values = new Array(dimension.length).fill(0);
   drawRadar();
 }
 
-// Genera el radar al cargar la página con los comportamientos por defecto
+// Genera el radar al cargar la página con los ejes por defecto
 window.onload = () => {
   generateRadar();
 };
