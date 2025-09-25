@@ -90,6 +90,14 @@ body{
   box-shadow: 0 0 0 3px var(--ring);
 }
 
+.btn--secondary{}
+.btn--secondary:hover{ background: var(--primary-600); transform: translateY(-1px); }
+.btn--secondary:active{ transform: translateY(0); }
+.btn--secondary:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
 /* 5) Tarjeta para el radar */
 .card{
   background: var(--card);
