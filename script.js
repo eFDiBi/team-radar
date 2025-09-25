@@ -44,7 +44,7 @@ function drawRadar() {
     const pt = polarToCartesian(angle, values[i]);
     points.push(`${pt.x},${pt.y}`);
   }
-  svg.innerHTML += `<polygon class="polygon" points="${pts.join(" ")}"></polygon>`;
+  svg.innerHTML += `<polygon class="polygon" points="${points.join(" ")}"></polygon>`;
 
   // Puntos activos
   for (let i = 0; i < dimensions.length; i++) {
