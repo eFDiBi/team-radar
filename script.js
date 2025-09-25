@@ -175,6 +175,11 @@ function exportRadarPNG() {
     if (c.tagName.toLowerCase() === 'text') {
       c.setAttribute('font-size', cs.fontSize);
       c.setAttribute('font-family', cs.fontFamily);
+      
+      // 👇 asegura que el relleno se pinte arriba del trazo blanco
+      const po = cs.paintOrder || 'stroke';
+      c.style.setProperty('paint-order', po);
+      
       // preservamos attributes de anclaje si no existen
       if (!c.hasAttribute('text-anchor')) c.setAttribute('text-anchor', 'middle');
       if (!c.hasAttribute('dominant-baseline')) c.setAttribute('dominant-baseline', 'middle');
