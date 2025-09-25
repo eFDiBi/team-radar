@@ -117,6 +117,94 @@ function generateRadar() {
   drawRadar();
 }
 
+// Descargar un Blob como archivo
+function downloadBlob(blob, filename) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  URL.revokeObjectURL(a.href);
+  a.remove();
+}
+
+// Exportar CSV (Dimension,Valor)
+function exportRadarCSV() {
+  if (!dimensions?.length) return;
+  const rows = [['Dimension', 'Valor']];
+  for (let i = 0; i < dimensions.length; i++) {
+    const dim = String(dimensions[i] ?? '');
+    const val = Number(values[i] ?? 0);
+    rows.push([dim, val]);
+  }
+  const csv = rows
+    .map(r => r.map(cell => {
+      const s = String(cell);
+      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    }).join(','))
+    .join('\n');
+
+  downloadBlob(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'radar.csv');
+}
+
+// Exportar PNG desde el SVG (#radar)
+function exportRadarPNG() {
+  const node = document.getElementById('radar');
+  if (!node) return;
+
+  // Tomamos tamaño del viewBox
+  const vb = (node.getAttribute('viewBox') || '0 0 500 500').split(/\s+/).map(parseFloat);
+  const width = Math.abs(vb[2] || 500);
+  const height = Math.abs(vb[3] || 500);
+
+  // Clonamos el SVG y “inlineamos” estilos computados para que se vean en la imagen
+  const clone = node.cloneNode(true);
+  const origEls = node.querySelectorAll('*');
+  const cloneEls = clone.querySelectorAll('*');
+
+  for (let i = 0; i < origEls.length; i++) {
+    const cs = getComputedStyle(origEls[i]);
+    const c  = cloneEls[i];
+
+    // Colores y trazos
+    if (cs.fill)        c.setAttribute('fill', cs.fill);
+    if (cs.stroke)      c.setAttribute('stroke', cs.stroke);
+    if (cs.strokeWidth) c.setAttribute('stroke-width', cs.strokeWidth);
+
+    // Texto legible
+    if (c.tagName.toLowerCase() === 'text') {
+      c.setAttribute('font-size', cs.fontSize);
+      c.setAttribute('font-family', cs.fontFamily);
+      // preservamos attributes de anclaje si no existen
+      if (!c.hasAttribute('text-anchor')) c.setAttribute('text-anchor', 'middle');
+      if (!c.hasAttribute('dominant-baseline')) c.setAttribute('dominant-baseline', 'middle');
+    }
+  }
+
+  // Serializamos el SVG clonado
+  clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  const svgStr = new XMLSerializer().serializeToString(clone);
+  const svgBlob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(svgBlob);
+
+  // Lo dibujamos en un canvas y descargamos PNG
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = width; canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, width, height);
+    ctx.drawImage(img, 0, 0, width, height);
+    URL.revokeObjectURL(url);
+
+    canvas.toBlob((pngBlob) => {
+      if (pngBlob) downloadBlob(pngBlob, 'radar.png');
+    }, 'image/png');
+  };
+  img.src = url;
+}
+
+
 // Genera la rueda al cargar la página con las dimensiones por defecto
 window.onload = async () => {
   await loadConfig(); // Inicialización al cargar
