@@ -30,7 +30,7 @@ function drawRadar() {
   for (let i = 0; i < dimensions.length; i++) {
     const angle = i * step;
     const guide = polarToCartesian(angle, maxValue);
-    const label = polarToCartesian(angle, maxValue + 0.95);
+    const label = polarToCartesian(angle, maxValue + 1.25);
     svg.innerHTML += `
       <line x1="0" y1="0" x2="${guide.x}" y2="${guide.y}" stroke="#ccc"/>
       <text x="${label.x}" y="${label.y}" font-size="12" text-anchor="middle" dominant-baseline="middle">${dimensions[i]}</text>
