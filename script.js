@@ -34,7 +34,13 @@ function drawRadar() {
     const label = polarToCartesian(angle, maxValue + 1.25);
     svg.innerHTML += `
       <line class="guide" x1="0" y1="0" x2="${guide.x}" y2="${guide.y}"/>
-      <text x="${label.x}" y="${label.y}" font-size="12" text-anchor="middle" dominant-baseline="middle">${dimensions[i]}</text>
+      <text x="${label.x}" y="${label.y}">${dimensions[i]}</text>
+    `;
+    svg.innerHTML += `
+      <line class="guide" x1="0" y1="0" x2="${g.x}" y2="${g.y}"/>
+      <text class="label" x="${lbl.x}" y="${lbl.y}">
+        ${dimensions[i]}
+      </text>
     `;
   }
 
@@ -44,14 +50,17 @@ function drawRadar() {
     const pt = polarToCartesian(angle, values[i]);
     points.push(`${pt.x},${pt.y}`);
   }
-  svg.innerHTML += `<polygon class="polygon" points="${points.join(" ")}"></polygon>`;
-
+  let dataLayer = `<g class="anim-pop">`;
+  dataLayer += `<polygon class="polygon" points="${points.join(" ")}"></polygon>`;
+  
   // Puntos activos
   for (let i = 0; i < dimensions.length; i++) {
     const angle = i * step;
     const pt = polarToCartesian(angle, values[i]);
-    svg.innerHTML += `<circle class="point" cx="${pt.x}" cy="${pt.y}" r="6"/>`;
+    dataLayer += `<circle class="point" cx="${pt.x}" cy="${pt.y}" r="6"/>`;
   }
+  dataLayer += `</g>`;
+  svg.innerHTML += dataLayer;
 
   // Puntos clickeables
   for (let i = 0; i < dimensions.length; i++) {
