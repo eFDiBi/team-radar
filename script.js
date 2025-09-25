@@ -34,13 +34,7 @@ function drawRadar() {
     const label = polarToCartesian(angle, maxValue + 1.25);
     svg.innerHTML += `
       <line class="guide" x1="0" y1="0" x2="${guide.x}" y2="${guide.y}"/>
-      <text x="${label.x}" y="${label.y}">${dimensions[i]}</text>
-    `;
-    svg.innerHTML += `
-      <line class="guide" x1="0" y1="0" x2="${g.x}" y2="${g.y}"/>
-      <text class="label" x="${lbl.x}" y="${lbl.y}">
-        ${dimensions[i]}
-      </text>
+      <text class="label" x="${label.x}" y="${label.y}">${dimensions[i]}</text>
     `;
   }
 
