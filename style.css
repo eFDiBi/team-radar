@@ -1,10 +1,106 @@
-body {
-  font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* Base */
+* { box-sizing: border-box; }
+:root{
+  /* 8px grid */
+  --space-1: 8px;  --space-2: 16px; --space-3: 24px; --space-4: 32px;
+  --radius: 12px;
+  --maxw: 960px;
+
+  /* Colores */
+  --bg: #f8fafc;           /* fondo app */
+  --card: #ffffff;         /* fondo tarjeta */
+  --text: #0f172a;         /* texto principal */
+  --muted: #475569;        /* texto secundario */
+  --border: #e5e7eb;       /* bordes suaves */
+
+  /* Primario */
+  --primary: #4a90e2;
+  --primary-600: #2f73c9;
+  --primary-700: #255fa7;
+  --ring: rgba(74,144,226,.35);
 }
-textarea {
-  resize: none;
-  font-family: monospace;
+
+html, body { height: 100%; }
+body{
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  display: flex; /* 1) contenedor centrado */
 }
+.container{
+  width: 100%;
+  max-width: var(--maxw);           /* 1) ancho máximo */
+  margin: 0 auto;                   /* 1) centrado */
+  padding: var(--space-4);          /* 3) 8px grid */
+}
+
+/* 2) Jerarquía tipográfica */
+.title{
+  margin: 0 0 var(--space-3);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-size: clamp(1.25rem, 1.2rem + 1.5vw, 2rem);
+}
+.label{
+  font-size: .95rem;
+  color: var(--muted);
+  margin-bottom: var(--space-1);
+}
+
+/* 3) Espaciado consistente con patrón “stack” */
+.stack > * + * { margin-top: var(--space-2); }
+
+/* Textarea + botón */
+.input{
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  background: #fff;
+}
+
+/* 4) Botón primario claro */
+.btn{
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .06s ease, background .15s ease, border-color .15s ease;
+}
+.btn--primary{
+  background: var(--primary);
+  color: #fff;
+}
+.btn--primary:hover{ background: var(--primary-600); transform: translateY(-1px); }
+.btn--primary:active{ transform: translateY(0); }
+.btn--primary:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* 5) Tarjeta para el radar */
+.card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 1px 3px rgba(16,24,40,.08);
+  padding: var(--space-4);
+}
+.card--radar{
+  margin-top: var(--space-4);
+}
+#radar{
+  display: block;
+  width: 100%;
+  height: auto;       /* mantiene proporción del viewBox */
+  max-width: 720px;   /* opcional: limita tamaño del gráfico */
+  margin: 0 auto;     /* centra el SVG dentro de la tarjeta */
+}
+
+/* Ajustes menores */
+textarea { resize: vertical; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
