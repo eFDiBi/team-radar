@@ -23,7 +23,8 @@ function drawRadar() {
   // Círculos de fondo
   for (let i = 1; i <= maxValue; i++) {
     const r = (i / maxValue) * radius;
-    svg.innerHTML += `<circle cx="0" cy="0" r="${r}" fill="none" stroke="#eee"/>`;
+    // svg.innerHTML += `<circle cx="0" cy="0" r="${r}" fill="none" stroke="#eee"/>`;
+    svg.innerHTML += `<circle class="grid-ring" cx="0" cy="0" r="${r}"></circle>`;
   }
 
   // Líneas + etiquetas
@@ -32,7 +33,7 @@ function drawRadar() {
     const guide = polarToCartesian(angle, maxValue);
     const label = polarToCartesian(angle, maxValue + 1.25);
     svg.innerHTML += `
-      <line x1="0" y1="0" x2="${guide.x}" y2="${guide.y}" stroke="#ccc"/>
+      <line class="guide" x1="0" y1="0" x2="${guide.x}" y2="${guide.y}"/>
       <text x="${label.x}" y="${label.y}" font-size="12" text-anchor="middle" dominant-baseline="middle">${dimensions[i]}</text>
     `;
   }
@@ -43,15 +44,13 @@ function drawRadar() {
     const pt = polarToCartesian(angle, values[i]);
     points.push(`${pt.x},${pt.y}`);
   }
-  svg.innerHTML += `
-    <polygon points="${points.join(" ")}" fill="rgba(0,123,255,0.4)" stroke="#007bff" stroke-width="2"/>
-  `;
+  svg.innerHTML += `<polygon class="polygon" points="${pts.join(" ")}"></polygon>`;
 
   // Puntos activos
   for (let i = 0; i < dimensions.length; i++) {
     const angle = i * step;
     const pt = polarToCartesian(angle, values[i]);
-    svg.innerHTML += `<circle cx="${pt.x}" cy="${pt.y}" r="6" fill="#007bff"/>`;
+    svg.innerHTML += `<circle class="point" cx="${pt.x}" cy="${pt.y}" r="6"/>`;
   }
 
   // Puntos clickeables
@@ -60,14 +59,10 @@ function drawRadar() {
     for (let level = 1; level <= maxValue; level++) {
       const pt = polarToCartesian(angle, level);
       svg.innerHTML += `
-        <circle 
-          cx="${pt.x}" cy="${pt.y}" r="5" 
-          fill="transparent" 
-          stroke="#ccc" 
-          stroke-width="1" 
+        <circle class="pick" 
+          cx="${pt.x}" cy="${pt.y}" r="6" 
           data-index="${i}" 
           data-value="${level}" 
-          style="cursor:pointer"
           onclick="handleClick(event)"
         />
       `;
