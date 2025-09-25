@@ -24,6 +24,7 @@
   --grid-strong: #e6eaf0;   /* radios un pelín más marcados */
   --poly-fill: rgba(74,144,226,.22); /* relleno del radar (usa primario) */
   --poly-stroke: var(--primary-600); /* borde del radar */
+  --target: #cfd6e3;   /* gris suave para los targets */
 }
 
 html, body { height: 100%; }
@@ -124,15 +125,9 @@ body{
 /* Targets: invisibles hasta hover (sin distracción) */
 #radar .pick{
   fill: transparent;
-  stroke: transparent;
+  stroke: var(--target);    /* contorno visible */
+  stroke-width: 1.25;       /* un poco más grueso para legibilidad */
   cursor: pointer;
-  transition: transform .12s ease, fill .12s ease, stroke .12s ease;
-  transform-box: fill-box; transform-origin: 50% 50%;
-}
-#radar .pick:hover{
-  stroke: var(--primary-600);
-  fill: rgba(74,144,226,.15);
-  transform: scale(1.06);
 }
 
 /* Ajustes menores */
